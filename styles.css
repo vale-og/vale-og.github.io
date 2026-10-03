@@ -16,9 +16,78 @@ body {
 }
 
 header {
-    background-color: #830089;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    background-color: #620068;
+    background-image: linear-gradient(120deg, #3d0042, #620068, #7a0880, #620068, #3d0042);
+    background-size: 300% 300%;
+    animation: header-glow 30s ease-in-out infinite;
     color: #fff;
     padding: 1rem 2rem;
+}
+
+/* Starfield: two tiled layers of stars drifting at different speeds */
+header::before,
+header::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-repeat: repeat;
+}
+
+/* Small, faint, faster stars */
+header::before {
+    background-image:
+        radial-gradient(2px 2px at 20px 30px, #fff 50%, transparent 51%),
+        radial-gradient(2px 2px at 80px 120px, rgba(255,255,255,0.8) 50%, transparent 51%),
+        radial-gradient(2px 2px at 150px 60px, #fff 50%, transparent 51%),
+        radial-gradient(2px 2px at 210px 180px, rgba(255,255,255,0.7) 50%, transparent 51%),
+        radial-gradient(2px 2px at 40px 200px, #fff 50%, transparent 51%),
+        radial-gradient(2px 2px at 120px 230px, rgba(255,255,255,0.6) 50%, transparent 51%),
+        radial-gradient(2px 2px at 230px 20px, #fff 50%, transparent 51%);
+    background-size: 250px 250px;
+    opacity: 0.7;
+    animation: star-drift-small 40s linear infinite;
+}
+
+/* Larger, brighter, slower stars */
+header::after {
+    background-image:
+        radial-gradient(3px 3px at 50px 80px, #fff 50%, transparent 51%),
+        radial-gradient(4px 4px at 300px 40px, #ffe9ff 50%, transparent 51%),
+        radial-gradient(3px 3px at 180px 260px, #fff 50%, transparent 51%),
+        radial-gradient(4px 4px at 360px 200px, #fff 50%, transparent 51%),
+        radial-gradient(3px 3px at 260px 340px, #e6f0ff 50%, transparent 51%);
+    background-size: 400px 400px;
+    animation: star-drift-large 90s linear infinite;
+}
+
+/* Each layer moves exactly one tile per loop so the restart is seamless */
+@keyframes star-drift-small {
+    from { background-position: 0 0; }
+    to { background-position: -250px 0; }
+}
+
+@keyframes star-drift-large {
+    from { background-position: 0 0; }
+    to { background-position: -400px 0; }
+}
+
+@keyframes header-glow {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* Respect visitors who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+    header,
+    header::before,
+    header::after {
+        animation: none;
+    }
 }
 
 .header-content {
@@ -74,10 +143,18 @@ nav a {
 
 
 
-nav a:hover,
-nav a.active {
-    background-color: #830089;
-    color: #fff;
+header > nav a {
+    border: 2px solid #fff;
+}
+
+header > nav a:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+header > nav a.active {
+    background-color: #fff;
+    color: #620068;
+    font-weight: bold;
 }
 
 .button-link {
@@ -193,12 +270,15 @@ footer {
     margin-top: 2rem;
 }
 
-/* Language switch button */
+/* Language switch button, pinned to the header's top-right corner */
 nav a.lang-link {
+    position: absolute;
+    top: 1rem;
+    right: 2rem;
     background-color: #fff;
-    color: #830089;
+    color: #620068;
     font-weight: bold;
-    border: 2px solid #830089;
+    border: 2px solid #fff;
 }
 
 nav a.lang-link:hover {
@@ -209,6 +289,10 @@ nav a.lang-link:hover {
 @media (max-width: 768px) {
     header {
         padding: 1rem;
+    }
+
+    nav a.lang-link {
+        right: 1rem;
     }
 
     .header-content {
