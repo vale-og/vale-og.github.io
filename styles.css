@@ -27,7 +27,7 @@ header {
     padding: 1rem 2rem;
 }
 
-/* Starfield: two tiled layers of stars drifting at different speeds */
+/* Starfield: two tiled layers of stars */
 header::before,
 header::after {
     content: "";
@@ -38,7 +38,7 @@ header::after {
     background-repeat: repeat;
 }
 
-/* Small, faint, faster stars */
+/* Small, faint stars */
 header::before {
     background-image:
         radial-gradient(2px 2px at 20px 30px, #fff 50%, transparent 51%),
@@ -50,10 +50,9 @@ header::before {
         radial-gradient(2px 2px at 230px 20px, #fff 50%, transparent 51%);
     background-size: 250px 250px;
     opacity: 0.7;
-    animation: star-drift-small 40s linear infinite;
 }
 
-/* Larger, brighter, slower stars */
+/* Larger, brighter stars */
 header::after {
     background-image:
         radial-gradient(3px 3px at 50px 80px, #fff 50%, transparent 51%),
@@ -62,18 +61,6 @@ header::after {
         radial-gradient(4px 4px at 360px 200px, #fff 50%, transparent 51%),
         radial-gradient(3px 3px at 260px 340px, #e6f0ff 50%, transparent 51%);
     background-size: 400px 400px;
-    animation: star-drift-large 90s linear infinite;
-}
-
-/* Each layer moves exactly one tile per loop so the restart is seamless */
-@keyframes star-drift-small {
-    from { background-position: 0 0; }
-    to { background-position: -250px 0; }
-}
-
-@keyframes star-drift-large {
-    from { background-position: 0 0; }
-    to { background-position: -400px 0; }
 }
 
 @keyframes header-glow {
@@ -83,9 +70,7 @@ header::after {
 
 /* Respect visitors who prefer less motion */
 @media (prefers-reduced-motion: reduce) {
-    header,
-    header::before,
-    header::after {
+    header {
         animation: none;
     }
 }
